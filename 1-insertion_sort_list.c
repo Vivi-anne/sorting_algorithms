@@ -1,22 +1,42 @@
 #include "sort.h"
 
 /**
- * swap_nodes - Swap two adjusent nodes in list
- * @head: A pointer to the head of the double-linked list
- * @n1: A pointer to the first node to swap
- *  @n2: A pointer to the second node to swap
+ * insertion_sort_list - Sorts a doubly linked list of integers in ascending order
+ * @list: Pointer to the head of the doubly linked list
  */
-void swap_nodes(listint_t **head, listint_t **n1, listint_t *n2);
+void insertion_sort_list(listint_t **list)
 {
-	(*n1)->next = n2->next;
-	if (n2->next != NULL)
-		n2->next->prev = *n1;
-	n2->prev = (*n1)->prev;
-	n2->next = *n1;
-	if ((*n1)->prev != NULL)
-		(*n1)->prev->next = n2;
-	else
-		*head = n2;
-	(*n1)->prev = n2;
-	*n1 = n2->prev;
+    listint_t *curr, *insertion, *temp;
+
+    if (!list || !(*list) || !((*list)->next))
+        return;
+
+    curr = (*list)->next;
+
+    while (curr)
+    {
+        insertion = curr->prev;
+        temp = curr;
+
+        while (insertion && insertion->n > temp->n)
+        {
+            if (insertion->prev)
+                insertion->prev->next = temp;
+            else
+                *list = temp;
+
+            if (temp->next)
+                temp->next->prev = insertion;
+
+            insertion->next = temp->next;
+            temp->prev = insertion->prev;
+            insertion->prev = temp;
+            temp->next = insertion;
+
+            insertion = temp->prev;
+        }
+
+        curr = curr->next;
+    }
 }
+
