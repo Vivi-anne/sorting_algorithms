@@ -1,58 +1,63 @@
 #include "sort.h"
 
 /**
- * move_left - Moves a given node to the left of the insertion pointer
- *
- * @curr: The current node to be moved
- * @insertion: The insertion pointer
- * @head: The head of the list
- */
-void move_left(listint_t *curr, listint_t *insertion, listint_t **head)
+*len_list - Returns the length of a doubly linked list
+*@head: Pointer to the Doubly Linked List
+*
+* Return: Length of Doubly Linked List
+*/
+int len_list(listint_t *head)
 {
-    listint_t *swap1 = curr->next;
-    listint_t *swap2 = insertion->prev;
+	int len = 0;
 
-    if (swap1 != NULL)
-        swap1->prev = insertion;
-    if (swap2 != NULL)
-        swap2->next = curr;
-    curr->prev = swap2;
-    insertion->next = swap1;
-    curr->next = insertion;
-    insertion->prev = curr;
-    if (*head == insertion)
-        *head = curr;
-
-    /* Print the list after each swap */
-    print_list(*head);
+	while (head)
+	{
+		len++;
+		head = head->next;
+	}
+	return (len);
 }
 
 /**
- * insertion_sort_list - Sorts a doubly linked list in ascending order
- *
- * @list: The head of the doubly linked list
- */
-void insertion_sort_list(listint_t **list)
+* swap_nodes - Swap two adjascent nodes in list
+* @head: A pointer to the head of the double-linked list
+* @node1: A pointer to the first node to swap
+* @node2: A pointer to the second node to swap
+*/
+void swap_nodes(listint_t **head, listint_t **node1, listint_t *node2)
 {
-    listint_t *curr = NULL;
-    listint_t *insertion = NULL;
-
-    if (list == NULL || *list == NULL || (*list)->next == NULL)
-        return;
-
-    curr = (*list)->next;
-    insertion = curr->prev;
-
-    while (curr != NULL)
-    {
-        insertion = curr->prev;
-        while (insertion != NULL && insertion->n > curr->n)
-        {
-            /* Move the current node to the left of the insertion pointer */
-            move_left(curr, insertion, list);
-            insertion = curr->prev;
-        }
-        curr = curr->next;
-    }
+	(*node1)->next = node2->next;
+	if (node2->next != NULL)
+		node2->next->prev = *node1;
+	node2->prev = (*node1)->prev;
+	node2->next = *node1;
+	if ((*node1)->prev != NULL)
+		(*node1)->prev->next = node2;
+	else
+		*head = node2;
+	(*node1)->prev = node2;
+	*node1 = node2->prev;
 }
 
+/**
+* insertion_sort_list - sorts a doubly linked list
+* @list: A pointer to the head of doubly linked list
+*/
+void insertion_sort_list(listint_t **list)
+{
+	listint_t *a, *b, *tmp;
+
+	if (list == NULL || *list == NULL || len_list(*list) < 2)
+		return;
+
+	for (a = (*list)->next; a != NULL; a = tmp)
+	{
+		tmp = a->next;
+		b = a->prev;
+		while (b != NULL && b->n > a->n)
+		{
+			swap_nodes(list, &b, a);
+			print_list((const listint_t *)*list);
+		}
+	}
+}
