@@ -29,7 +29,7 @@ size_t seq, char flow)
 
 	if (seq > 1)
 	{
-		for (a = start; a < start + jump;ai++)
+		for (a = start; a < start + jump;a++)
 		{
 			if ((flow == UP && array[a] > array[a + jump]) ||
 			    (flow == DOWN && array[a] < array[a + jump]))
