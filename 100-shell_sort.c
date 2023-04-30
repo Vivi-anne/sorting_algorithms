@@ -13,7 +13,7 @@ void shell_sort(int *array, size_t size)
     int temp;
 
     /* Ensure array exists and has at least two elements */
-    if (array == NULL || size < 2)
+    if (array == NULL || size == 1)
         return;
 
     /* Start with a big gap, then reduce the gap */
