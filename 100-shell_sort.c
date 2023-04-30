@@ -1,42 +1,61 @@
 #include "sort.h"
 
 /**
+ * swap - swaps two values of array
+ * @array: the array
+ * @a: first element's index
+ * @b: second element's index
+ *
+ * Return: void
+ */
+void swap(int *array, long int a, long int b)
+{
+	int tmp;
+
+	if (!array)
+		return;
+
+	tmp = array[a];
+	array[a] = array[b];
+	array[b] = tmp;
+}
+
+/**
  * shell_sort - sorts an array of integers in ascending order
  *              using the Shell sort algorithm
  *
  * @array: array to be sorted
  * @size: size of the array
+ *
+ * Return: void
  */
 void shell_sort(int *array, size_t size)
 {
-    size_t gap, i, j;
-    int temp;
+	long int a, next, k, j;
 
-    /* Ensure array exists and has at least two elements */
-    if (array == NULL || size == 1)
-        return;
+	if (array == NULL || (size == 1))
+		return;
 
-    /* Start with a big gap, then reduce the gap */
-    for (gap = size / 2; gap > 0; gap /= 2)
-    {
-        /* Do an insertion sort for each gap */
-        for (i = gap; i < size; i++)
-        {
-            /* Save current element to temp */
-            temp = array[i];
+	a = next = 1;
+	while ((size_t)next < size)
+	{
+		a = next;
+		next = (a * 3) + 1;
+	}
 
-            /* Shift elements until the correct position is found */
-            for (j = i; j >= gap && array[j - gap] > temp; j -= gap)
-            {
-                array[j] = array[j - gap];
-            }
-
-            /* Insert the saved element into its correct position */
-            array[j] = temp;
-        }
-
-        /* Print the array after each iteration */
-        print_array(array, size);
-    }
+	while (a >= 1)
+	{
+		for (j = a; (size_t)j < size; j++)
+		{
+			for (k = j - a; k >= 0; k -= a)
+			{
+				if (array[k] > array[k + a])
+					swap(array, k, k + a);
+				else
+					break;
+			}
+		}
+		a = (a - 1) / 3;
+		print_array(array, size);
+	}
 }
-
