@@ -21,7 +21,7 @@ void radix_sort(int *array, size_t size)
 		return;
 
 	max = largest_number(array, size);
-	for (i = j; (max / j) > 0; j *= BASE)
+	for (j = 1; (max / j) > 0; j *= BASE)
 	{
 		count_sort(array, size, j);
 		print_array(array, size);
@@ -60,7 +60,7 @@ void count_sort(int *array, size_t size, int place)
 		return;
 	for (j = size - 1; j >= 0; j--)
 	{
-		d = (array[j] / place) % BASE;
+		a = (array[j] / place) % BASE;
 		tmp[(count[a]--) - 1] = array[j];
 	}
 	for (j = 0; (size_t)j < size; j++)
